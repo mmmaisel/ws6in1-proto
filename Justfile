@@ -11,3 +11,7 @@ test:
 clippy:
     cargo clippy --all-features
     cargo clippy --all-features --tests
+
+check:
+    cargo deny fetch
+    cargo deny check
