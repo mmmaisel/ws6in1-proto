@@ -18,9 +18,11 @@
 
 //! Low-level Ws6in1 protocol implementation.
 
+mod cmd;
 mod data;
 mod frame;
 
+pub use cmd::{Ws6in1SetDate, Ws6in1SetTime};
 pub use data::{
     Ws6in1DataFrame, Ws6in1DataFrameBase, Ws6in1DataHeader, Ws6in1Payload,
     Ws6in1PayloadBase,
