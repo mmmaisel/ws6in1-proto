@@ -17,6 +17,7 @@ path = "src/lib.rs"
 [dependencies]
 byteorder-cursor = { version = "1.0.1", default-features = false }
 heapless = { version = "0.8.0", optional = true }
+time = { version = "0.3.41", default-features = false, features = ["parsing", "macros"] }
 
 [features]
 default = ["std"]

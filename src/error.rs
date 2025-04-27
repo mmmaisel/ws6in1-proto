@@ -36,6 +36,18 @@ pub enum Error {
     UnsupportedOpcode { opcode: u8 },
     /// The payload of a packet exceeds the maximum supported length.
     PayloadTooLarge { len: usize },
+    /// The parsed unexpectedly encountered end of input after this token number.
+    UnexpectedEnd { tpos: usize },
+    /// The message contained a non UTF8 character.
+    InvalidCharacter { idx: usize },
+    /// Parsing number from string token with given number failed.
+    InvalidToken { tpos: usize },
+    /// Parser encountered "garbage" characters at the end of the message.
+    GarbageEnd { char: u8 },
+    /// A fragment was discarded during message assembly.
+    FragmentDiscarded { idx: u8 },
+    /// A message exceeded maximum length during assembly.
+    MessageTooLarge { len: usize },
 }
 
 impl core::fmt::Display for Error {
@@ -64,6 +76,34 @@ impl core::fmt::Display for Error {
                     f,
                     "The messages payload length {len} exceeds \
                     the supported maximum"
+                )
+            }
+            Self::UnexpectedEnd { tpos } => {
+                write!(f, "Unexpected end found after token number {tpos}")
+            }
+            Self::InvalidCharacter { idx } => {
+                write!(f, "Non UTF8 character was found at index {idx}")
+            }
+            Self::InvalidToken { tpos } => {
+                write!(f, "Parsing token number {tpos} failed",)
+            }
+            Self::GarbageEnd { char } => {
+                write!(
+                    f,
+                    "Parser found garbage at end of message: 0x{char:02X}",
+                )
+            }
+            Self::FragmentDiscarded { idx } => {
+                write!(
+                    f,
+                    "Fragment {idx} was discarded during message assembly",
+                )
+            }
+            Self::MessageTooLarge { len } => {
+                write!(
+                    f,
+                    "The assembled message length {len} exceeds \
+                    the supported maximum",
                 )
             }
         }

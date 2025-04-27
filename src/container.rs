@@ -17,10 +17,14 @@
 \******************************************************************************/
 use core::ops::Deref;
 
+use crate::Error;
+
 /// Interface to a variable length storage container.
 pub trait Ws6in1Container<T: Clone>: Deref<Target = [T]> + Sized {
     /// Constructs a container from a slice.
     fn from_slice(value: &[T]) -> Self;
+    /// Appends the content on a container to another.
+    fn append(&mut self, value: &impl Ws6in1Container<T>) -> Result<(), Error>;
     /// Clears the content of a container.
     fn clear(&mut self);
 }
@@ -29,6 +33,11 @@ pub trait Ws6in1Container<T: Clone>: Deref<Target = [T]> + Sized {
 impl<T: Clone> Ws6in1Container<T> for Vec<T> {
     fn from_slice(value: &[T]) -> Self {
         value.to_vec()
+    }
+
+    fn append(&mut self, other: &impl Ws6in1Container<T>) -> Result<(), Error> {
+        self.extend_from_slice(other);
+        Ok(())
     }
 
     fn clear(&mut self) {
@@ -42,6 +51,13 @@ impl<T: Clone, const N: usize> Ws6in1Container<T> for heapless::Vec<T, N> {
         // Unwrap is fine because the provided buffers are already length
         // checked.
         heapless::Vec::from_slice(value).unwrap()
+    }
+
+    fn append(&mut self, other: &impl Ws6in1Container<T>) -> Result<(), Error> {
+        self.extend_from_slice(other)
+            .map_err(|()| Error::MessageTooLarge {
+                len: self.len() + other.len(),
+            })
     }
 
     fn clear(&mut self) {

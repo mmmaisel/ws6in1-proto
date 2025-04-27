@@ -21,6 +21,7 @@
 
 mod container;
 mod error;
+pub mod parser;
 pub mod protocol;
 
 pub use container::Ws6in1Container;
