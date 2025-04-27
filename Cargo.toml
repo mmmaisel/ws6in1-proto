@@ -9,7 +9,7 @@ name = "ws6in1-proto"
 readme = "README.md"
 repository = "https://github.com/mmmaisel/ws6in1-proto/"
 rust-version = "1.85.0"
-version = "1.0.0"
+version = "1.0.1"
 
 [lib]
 path = "src/lib.rs"
