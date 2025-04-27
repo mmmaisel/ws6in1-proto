@@ -15,13 +15,19 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 \******************************************************************************/
-#![cfg_attr(not(feature = "std"), no_std)]
-#![doc = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/README.md"))]
-#![forbid(unsafe_code)]
 
-mod container;
-mod error;
-pub mod protocol;
+//! Low-level Ws6in1 protocol implementation.
 
-pub use container::Ws6in1Container;
-pub use error::{Error, Result};
+mod data;
+mod frame;
+
+pub use data::{
+    Ws6in1DataFrame, Ws6in1DataFrameBase, Ws6in1DataHeader, Ws6in1Payload,
+    Ws6in1PayloadBase,
+};
+#[cfg(feature = "heapless")]
+pub use data::{Ws6in1DataFrameHeapless, Ws6in1PayloadHeapless};
+#[cfg(feature = "std")]
+pub use data::{Ws6in1DataFrameStd, Ws6in1PayloadStd};
+use frame::Ws6in1Footer;
+pub use frame::Ws6in1Serde;

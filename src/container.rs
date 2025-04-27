@@ -15,13 +15,36 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 \******************************************************************************/
-#![cfg_attr(not(feature = "std"), no_std)]
-#![doc = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/README.md"))]
-#![forbid(unsafe_code)]
+use core::ops::Deref;
 
-mod container;
-mod error;
-pub mod protocol;
+/// Interface to a variable length storage container.
+pub trait Ws6in1Container<T: Clone>: Deref<Target = [T]> + Sized {
+    /// Constructs a container from a slice.
+    fn from_slice(value: &[T]) -> Self;
+    /// Clears the content of a container.
+    fn clear(&mut self);
+}
 
-pub use container::Ws6in1Container;
-pub use error::{Error, Result};
+#[cfg(feature = "std")]
+impl<T: Clone> Ws6in1Container<T> for Vec<T> {
+    fn from_slice(value: &[T]) -> Self {
+        value.to_vec()
+    }
+
+    fn clear(&mut self) {
+        self.clear();
+    }
+}
+
+#[cfg(feature = "heapless")]
+impl<T: Clone, const N: usize> Ws6in1Container<T> for heapless::Vec<T, N> {
+    fn from_slice(value: &[T]) -> Self {
+        // Unwrap is fine because the provided buffers are already length
+        // checked.
+        heapless::Vec::from_slice(value).unwrap()
+    }
+
+    fn clear(&mut self) {
+        self.clear();
+    }
+}
