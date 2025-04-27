@@ -1,9 +1,9 @@
 [package]
 authors = ["Max Maisel <max.maisel@posteo.de>"]
 categories = ["encoding", "hardware-support", "no-std", "parser-implementations"]
-description = "A Rust implementation of the CC8488 weather station protocol"
+description = "A Rust implementation of the C8488 weather station protocol"
 edition = "2021"
-keywords = ["CC8488", "Bresser"]
+keywords = ["C8488", "Bresser"]
 license = "AGPL-3.0-or-later"
 name = "ws6in1-proto"
 readme = "README.md"
