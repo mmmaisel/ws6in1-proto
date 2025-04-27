@@ -19,6 +19,8 @@
 #![doc = include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/README.md"))]
 #![forbid(unsafe_code)]
 
+#[cfg(feature = "client")]
+pub mod client;
 mod container;
 mod error;
 pub mod parser;
