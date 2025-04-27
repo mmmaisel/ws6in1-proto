@@ -32,6 +32,8 @@ pub enum Error {
     InvalidMagic { magic: u8 },
     /// The given frame type is unsupported.
     UnsupportedType { r#type: u8 },
+    /// The opcode of this message has an unsupported value.
+    UnsupportedOpcode { opcode: u8 },
     /// The payload of a packet exceeds the maximum supported length.
     PayloadTooLarge { len: usize },
 }
@@ -53,6 +55,9 @@ impl core::fmt::Display for Error {
             }
             Self::UnsupportedType { r#type: typ } => {
                 write!(f, "Found unsupported frame type {typ:X}")
+            }
+            Self::UnsupportedOpcode { opcode } => {
+                write!(f, "Found unsupported opcode {opcode:X}")
             }
             Self::PayloadTooLarge { len } => {
                 write!(

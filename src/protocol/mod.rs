@@ -18,10 +18,16 @@
 
 //! Low-level Ws6in1 protocol implementation.
 
+mod any;
 mod cmd;
 mod data;
 mod frame;
 
+#[cfg(feature = "heapless")]
+pub use any::AnyWs6in1MessageHeapless;
+#[cfg(feature = "std")]
+pub use any::AnyWs6in1MessageStd;
+pub use any::{AnyWs6in1Message, AnyWs6in1MessageBase};
 pub use cmd::{Ws6in1SetDate, Ws6in1SetTime};
 pub use data::{
     Ws6in1DataFrame, Ws6in1DataFrameBase, Ws6in1DataHeader, Ws6in1Payload,
