@@ -29,3 +29,6 @@ default = ["std"]
 client = ["std", "dep:async-hid", "dep:futures-lite", "time/local-offset"]
 heapless = ["dep:heapless"]
 std = ["byteorder-cursor/std"]
+
+[package.metadata.docs.rs]
+all-features = true
